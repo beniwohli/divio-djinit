@@ -1,0 +1,4 @@
+divio-djinit
+============
+
+Django Initializer
