@@ -14,8 +14,6 @@ import ask
 
 
 if __name__ == '__main__':
-    _pyrate = False
-
     DIVIO_DJANGO_TEMPLATE = 'git@github.com:divio/divio-django-template.git'
     DIVIO_BOILERPLATE = 'git@github.com:divio/divio-boilerplate.git'
     DIVO_STANDARDSITE = 'git@github.com:divio/divio-standardsite.git'
@@ -33,7 +31,6 @@ if __name__ == '__main__':
     if i == 'y':
         try:
             from pyrate.services import github
-            _pyrate = True
         except ImportError:
             raise ImportError("Warning: Pyrate could not be found."
                               "Please install it and try again. (pip install pyrate -U)")
