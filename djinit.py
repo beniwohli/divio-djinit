@@ -6,21 +6,14 @@
 #  python -c "$(curl -fsSL https://raw.github.com/Chive/playground/master/python/djinit.py)"
 #
 # Copyright (C) 2013 Kim Thoenen <kim@smuzey.ch>.  All Rights Reserved.
-from getpass import getpass
 
 import os
 from random import choice
 import re
+import ask
 
 
 if __name__ == '__main__':
-
-    # Fix python 2.x
-    try:
-        input = raw_input
-    except NameError:
-        pass
-
     _pyrate = False
 
     DIVIO_DJANGO_TEMPLATE = 'git@github.com:divio/divio-django-template.git'
@@ -35,82 +28,62 @@ if __name__ == '__main__':
     print("-----------------------------")
     print(" Divio DjangoCMS Initializer")
     print("-----------------------------")
-    while 1:
-        i = input("Do you want the script to create your Github repo? (y/n)")
+    ask.explain(True)
+    i = ask.askBool("Do you want the script to create your Github repo?", default='y')
+    if i == 'y':
+        try:
+            from pyrate.services import github
+            _pyrate = True
+        except ImportError:
+            raise ImportError("Warning: Pyrate could not be found."
+                              "Please install it and try again. (pip install pyrate -U)")
+
+        github_user = ask.ask("Please enter your Github username")
+        github_pass = ask.askPassword("Please enter your Github password")
+        github_org = ask.ask("If you want to create the repo on an organisation's account, "
+                           "enter its name now. Otherwise hit enter", default='')
+        project_name = ask.ask("Please enter a name for the repo")
+        project_private = ask.askBool("Should the repo be private?", default='y')
+        if project_private == 'y':
+            project_private = True
+
+        elif project_private == 'n':
+            project_private = False
+
+        h = github.GithubPyrate(github_user, github_pass)
+        if github_org:
+            h.create_repo(project_name, org_name=github_org, private=project_private)
+            repo_owner = github_org
+        else:
+            h.create_repo(project_name, private=project_private)
+            repo_owner = github_user
+
+        # TODO: check if it actually worked!
+        github_remote = "git@github.com:" + repo_owner + "/" + project_name + ".git"
+
+    elif i == 'n':
+        print("Please create your repo on Github first then!")
+        project_name = ask.ask("Please enter the repo name")
+        repo_owner = ask.ask("Please enter the account name which the repo belongs to")
+        i = ask.askBool("Is this the repo's Github remote: git@github.com:" + repo_owner + "/"
+                  + project_name + ".git?", default='y')
         if i == 'y':
-            try:
-                from pyrate.services import github
-                _pyrate = True
-            except ImportError:
-                raise ImportError("Warning: Pyrate could not be found."
-                                  "Please install it and try again. (pip install pyrate -U)")
-
-            github_user = input("Please enter your Github username: ")
-            github_pass = getpass("Please enter your Github password: ")
-            github_org = input("If you want to create the repo on an organisation's account, "
-                               "enter its name now. Otherwise hit enter: ")
-            project_name = input("Please enter a name for the repo: ")
-            while 1:
-                project_private = input("Should the repo be private? (y/n) ")
-                if project_private == 'y':
-                    project_private = True
-                    break
-
-                elif project_private == 'n':
-                    project_private = False
-                    break
-
-                print("invalid input")
-
-            h = github.GithubPyrate(github_user, github_pass)
-            if github_org:
-                h.create_repo(project_name, org_name=github_org, private=project_private)
-                repo_owner = github_org
-            else:
-                h.create_repo(project_name, private=project_private)
-                repo_owner = github_user
-
-            # TODO: check if it actually worked!
             github_remote = "git@github.com:" + repo_owner + "/" + project_name + ".git"
-            break
-
         elif i == 'n':
-            print("Please create your repo on Github first then!")
-            project_name = input("Please enter the repo name: ")
-            repo_owner = input("Please enter the account which the repo belongs to: ")
-            while 1:
-                i = input("Is this the repo's Github remote: git@github.com:" + repo_owner + "/"
-                          + project_name + ".git? (y/n) ")
-                if i == 'y':
-                    github_remote = "git@github.com:" + repo_owner + "/" + project_name + ".git"
-                    break
-                elif i == 'n':
-                    github_remote = input("Please enter your github remote then: ")
-                    break
-                print("invalid input")
-            break
-        print("invalid input")
+            github_remote = ask.ask("Please enter your github remote link:")
 
-    while 1:
-        i = input("Do you want to add the standardsite styles and templates from divio-styleguide? (y/n) ")
-        if i == 'y':
-            standardsite = True
-            pushes += 1
-            break
-        elif i == 'n':
-            standardsite = False
-            break
-        print("invalid input")
+    i = ask.askBool("Do you want to add the standardsite styles and templates from divio-styleguide?", default='y')
+    if i == 'y':
+        standardsite = True
+        pushes += 1
+    elif i == 'n':
+        standardsite = False
 
-    while 1:
-        i = input("Do you want to create a virtualenv and run the makefile (make init)? (y/n) ")
-        if i == 'y':
-            minit = True
-            break
-        elif i == 'n':
-            minit = False
-            break
-        print("invalid input")
+    i = ask.askBool("Do you want to create a virtualenv and run the makefile (make init)?", default='y')
+    if i == 'y':
+        minit = True
+    elif i == 'n':
+        minit = False
 
     print("")
 
