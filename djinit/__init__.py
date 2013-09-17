@@ -80,20 +80,16 @@ def setup_interactive(args):
         print("Please create your repo on Github first then!")
         conf['project_name'] = ask.ask("Please enter the repo name")
         conf['repo_owner'] = ask.ask("Please enter the account name which the repo belongs to")
-        i = ask.askBool("Is this the repo's Github remote ssh url: git@github.com:" + conf['repo_owner'] + "/"
-                        + conf['project_name'] + ".git?", default='y')
-        if i == 'y':
+        if ask.askBool("Is this the repo's Github remote ssh url: git@github.com:" + conf['repo_owner'] + "/"
+                       + conf['project_name'] + ".git?", default='y'):
             conf['github_remote'] = "git@github.com:" + conf['repo_owner'] + "/" + conf['project_name'] + ".git"
-        elif i == 'n':
+
+        else:
             conf['github_remote'] = ask.ask("Please enter your github remote ssh url:")
 
     conf['standardsite'] = ask.askBool("Do you want to add the standardsite styles and templates from "
                                        "divio-styleguide?", default='y')
-
-    if ask.askBool("Do you want to create a virtualenv and run the makefile (make init)?", default='y') == 'y':
-        conf['make_init'] = True
-    else:
-        conf['make_init'] = False
+    conf['make_init'] = ask.askBool("Do you want to create a virtualenv and run the makefile (make init)?", default='y')
 
     return conf
 
