@@ -1,0 +1,5 @@
+include LICENSE
+include requirements.txt
+recursive-include djinit/ *
+recursive-exclude * *.pyc
+recursive-exclude * .DS_Store
