@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Important: For now pip install ask==0.0.6
+
 """
 djinit: Divio's DjangoCMS Initializer
 
