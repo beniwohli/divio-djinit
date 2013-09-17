@@ -4,7 +4,7 @@
 djinit: Divio's DjangoCMS Initializer
 
 Usage:
-    djinit <repo_name> -u <user> -p <pass> (-c | --remote=<remote>) [-o <organization> -s -m -P]
+    djinit <repo_name> -u <user> -p <pass> (-c | -r <remote>) [-o <organization> -s -m -P]
     djinit <repo_name> -i
     djinit (-h | --help)
     djinit --version
@@ -14,7 +14,7 @@ Options:
     -u --user=<user>            Github Username [nope: or Email (defaults to git-config's user.email)]
     -p --pass=<pass>            Github Password
     -c --create                 create github repo
-    --remote=<remote>           Github Remote Link
+    -r --remote=<remote>        Github Remote Link
     -o --org=<organization>     create repo on organization account
     -s --standardsite           install standardsite styles
     -m --make-init              make init
