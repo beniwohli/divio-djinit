@@ -275,3 +275,7 @@ def main():
         print("* add ('standardsite.html', _('standardsite')),"
               "within src/settings.py at CMS_TEMPLATES as first position")
         print("* change {% extend %} to standardsite.html instead of base.html within all selectable templates")
+
+
+if __name__ == '__main__':
+    main()
