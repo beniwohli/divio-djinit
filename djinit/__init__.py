@@ -96,7 +96,7 @@ def setup_interactive(args):
 
 def setup(args):
     if args['--interactive']:
-        conf = setup_interactive()
+        conf = setup_interactive(args)
     else:
         conf = setup_cli(args)
 
