@@ -180,6 +180,20 @@ if __name__ == '__main__':
         print("  OK")
         print("")
 
+        # updating files for standardsite
+        print("* Adding standardsite to cms templates")
+        os.system("sed -i '' 's/CMS_TEMPLATES = \[/CMS_TEMPLATES = \[\'$'\n\t(\'standardsite.html\', "
+                  "_(\'standardsite\')),/g' src/settings.py")
+        os.system("sed -i '' 's/{% extends \"base.html\" %}/{% extends \"standardsite.html\" %}/g' "
+                  "templates/fullwidth.html")
+        os.system("sed -i '' 's/{% extends \"base.html\" %}/{% extends \"standardsite.html\" %}/g' "
+                  "templates/sidebar_left.html")
+        os.system("sed -i '' 's/{% extends \"base.html\" %}/{% extends \"standardsite.html\" %}/g' "
+                  "templates/sidebar_right.html")
+        print("  OK")
+        print("")
+
+
         # after standardsite add push to github
         print("* Added Standardsite files, another push to Github")
         os.system('cd ' + pn + ' && git add -A .')
@@ -220,9 +234,3 @@ if __name__ == '__main__':
     print("")
     print("")
     print("All done!")
-    if standardsite:
-        print("")
-        print("don't forget to:")
-        print("* add ('standardsite.html', _('standardsite')),"
-              "within src/settings.py at CMS_TEMPLATES as first position")
-        print("* change {% extend %} to standardsite.html instead of base.html within all selectable templates")
