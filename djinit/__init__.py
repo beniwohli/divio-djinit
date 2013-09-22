@@ -28,7 +28,7 @@ from docopt import docopt
 from pyrate.services import github
 from random import choice
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 DIVIO_DJANGO_TEMPLATE = 'git@github.com:divio/divio-django-template.git'
 DIVIO_BOILERPLATE = 'git@github.com:divio/divio-boilerplate.git'
