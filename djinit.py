@@ -28,7 +28,7 @@ if __name__ == '__main__':
     print("-----------------------------")
     ask.explain(True)
     i = ask.askBool("Do you want the script to create your Github repo?", default='y')
-    if i == 'y':
+    if i:
         try:
             from pyrate.services import github
         except ImportError:
@@ -41,11 +41,6 @@ if __name__ == '__main__':
                            "enter its name now. Otherwise hit enter", default='')
         project_name = ask.ask("Please enter a name for the repo")
         project_private = ask.askBool("Should the repo be private?", default='y')
-        if project_private == 'y':
-            project_private = True
-
-        elif project_private == 'n':
-            project_private = False
 
         h = github.GithubPyrate(github_user, github_pass)
         if github_org:
@@ -58,29 +53,25 @@ if __name__ == '__main__':
         # TODO: check if it actually worked!
         github_remote = "git@github.com:" + repo_owner + "/" + project_name + ".git"
 
-    elif i == 'n':
+    else:
         print("Please create your repo on Github first then!")
         project_name = ask.ask("Please enter the repo name")
         repo_owner = ask.ask("Please enter the account name which the repo belongs to")
         i = ask.askBool("Is this the repo's Github remote: git@github.com:" + repo_owner + "/"
                   + project_name + ".git?", default='y')
-        if i == 'y':
+        if i:
             github_remote = "git@github.com:" + repo_owner + "/" + project_name + ".git"
-        elif i == 'n':
+        else:
             github_remote = ask.ask("Please enter your github remote link:")
 
     i = ask.askBool("Do you want to add the standardsite styles and templates from divio-styleguide?", default='y')
-    if i == 'y':
+    if i:
         standardsite = True
         pushes += 1
-    elif i == 'n':
+    else:
         standardsite = False
 
-    i = ask.askBool("Do you want to create a virtualenv and run the makefile (make init)?", default='y')
-    if i == 'y':
-        minit = True
-    elif i == 'n':
-        minit = False
+    minit = ask.askBool("Do you want to create a virtualenv and run the makefile (make init)?", default='y')
 
     print("")
 
